@@ -24,7 +24,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description = "Finetune on VQARAD")
 
     # parser.add_argument('--run_name', type = str, required = True, help = "run name for wandb")
-    parser.add_argument('--data_dir', type = str, required = False, default = "/home/terasquid/Documents/med-VQA/dataset/VQA_RAD", help = "path for data")
+    parser.add_argument('--data_dir', type = str, required = False, default = "/vqa_rad", help = "path for data")
     parser.add_argument('--model_dir', type = str, required = False, default = "/home/terasquid/Documents/med-VQA/baselines/Weights/roco_mlm/val_loss_3.pt", help = "path to load weights")
     parser.add_argument('--save_dir', type = str, required = False, default = "/home/terasquid/med-VQA/Weights/vqa-rad", help = "path to save weights")
     parser.add_argument('--question_type', type = str, required = False, default = None,  help = "choose specific category if you want")
