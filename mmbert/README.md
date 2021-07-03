@@ -7,7 +7,7 @@ Yash Khare*, Viraj Bagal*, Minesh Mathew, Adithi Devi, U Deva Priyakumar, CV Jaw
 ## Getting Data: 
 
 Download the dataset from [here](https://gitlab.com/aneesh-shetye/med-vqa-data/-/tree/main/vqa_rad).
-Then place the directory in vqarad.
+Then place the directory in `/mmbert/vqarad/vqarad`.
 
 ## Train on VQARAD
 
