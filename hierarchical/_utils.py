@@ -4,16 +4,18 @@ import torch
 from torch.nn.utils.rnn import pad_sequence 
 from torch.utils.data import DataLoader, Dataset
 from PIL import Image 
+from  _config import Config as config
 import numpy as np
 import torch.nn as nn
 import pickle
+import _utils
 
 class Vocabulary:
     def __init__(self, freq_threshold):
         self.itos = {0:"<PAD>", 1:"<SOS>" , 2:"<EOS>" , 3:"<UNK>", 4:"?"} #itos = index to string
         self.stoi = {"<PAD>":0 ,"<SOS>":1 ,"<EOS>":2 ,"<UNK>":3,"?":4 }   #stoi = string to index
         self.freq_threshold = freq_threshold
-        self.en_model = spacy.load('en')
+        self.en_model = spacy.load('en_core_web_sm')
 
     def __len__(self):
         return len(self.itos)
@@ -42,15 +44,15 @@ class Vocabulary:
                 idx+=1
 
 
-  def numericalize(self, text):
-    tokenized_text = self.tokenizer_eng(text)
-    liss = []
-    for token in tokenized_text:
-      if token in list(self.stoi.keys()):
-        liss.append(self.stoi[token])
-      else:
-        liss.append(self.stoi["<UNK>"])
-    return liss
+    def numericalize(self, text):
+        tokenized_text = self.tokenizer_eng(text)
+        liss = []
+        for token in tokenized_text:
+          if token in list(self.stoi.keys()):
+            liss.append(self.stoi[token])
+          else:
+            liss.append(self.stoi["<UNK>"])
+        return liss
   
 
 class VQADataset(Dataset):
@@ -95,7 +97,7 @@ class VQADataset(Dataset):
 
     def __getitem__(self, index):
         img_id = self.image_ids[index]
-        image_path = self.image_path +"\\"+img_id+".jpg"
+        image_path = self.image_path +"/"+img_id+".jpg"
         
         image = Image.open(image_path)
         image = np.array(image)
@@ -173,7 +175,7 @@ class Datamake:
 
 
     def make_ans_dict(path):
-        with open(path,"rb") as f:
+        with open( config.TRAIN_DATA_DICT_PATH,"rb") as f:
             x = pickle.load(f)
         a=[]
         for i in range(len(x)):

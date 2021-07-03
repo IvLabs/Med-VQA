@@ -1,7 +1,7 @@
 import math
 import numpy as np
+from _config import Config as config
 import torch
-
 
 class Trainer:
     @staticmethod
@@ -13,7 +13,7 @@ class Trainer:
             model.train()
             l = 0
             for i in train_loader:
-                images = i[0].permute(0, 3, 1, 2).to('cuda')
+                images = i[0].permute(0, 3, 1, 2).to(config.DEVICE)
                 question = i[1].long().to(config.DEVICE)
                 answers = i[2]
                 target=[]
@@ -26,6 +26,7 @@ class Trainer:
                 optimizer.zero_grad()
                 loss = criterion(out, target)
                 loss.backward()
+                # print("hello world")
                 l+=loss.item()
                 optimizer.step()
         
