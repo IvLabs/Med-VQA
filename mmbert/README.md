@@ -1,5 +1,5 @@
 # MMBERT
-
+Forked and modified from https://github.com/VirajBagal/MMBERT
 ## MMBERT: Multimodal BERT Pretraining for Improved Medical VQA
 Yash Khare*, Viraj Bagal*, Minesh Mathew, Adithi Devi, U Deva Priyakumar, CV Jawahar
 
