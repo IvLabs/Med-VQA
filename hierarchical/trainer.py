@@ -2,10 +2,11 @@ import math
 import numpy as np
 from _config import Config as config
 import torch
+import sys
 
 class Trainer:
     @staticmethod
-    def train(model, train_loader, valid_loader, answers_dict, optimizer, criterion, scheduler, config):
+    def train(model, train_loader, valid_loader, answers_dict, optimizer, criterion, scheduler, config, stats_file):
         epoch_loss = []
         pytorch_total_params = sum(p.numel() for p in model.parameters())
         print(f"Total parameters = {pytorch_total_params}")
@@ -31,12 +32,18 @@ class Trainer:
                 optimizer.step()
         
             l /= len(train_loader)
-            loss_file = open(config.LOSS_PATH,"a")
-            loss_file.write(f"Loss on epoch {n} : {str(l)} \n")
-            loss_file.close()
+            # loss_file = open(config.LOSS_PATH,"a")
+            # loss_file.write(f"Loss on epoch {n} : {str(l)} \n")
+            # loss_file.close()
             scheduler.step(l)
-            if n%30 == 0:
-                torch.save(model.state_dict(), config.MODEL_STORE_PATH+str(n)+".pth")
+            # torch.save(model.state_dict(), config.MODEL_STORE_PATH+str(n)+".pth")
+            stats = dict(epoch=epoch, step=step,
+                                 lr_weights=optimizer.param_groups[0]['lr'],
+                                 lr_biases=optimizer.param_groups[1]['lr'],
+                                 loss=loss.item(),
+                                 time=int(time.time() - start_time))
+            print(json.dumps(stats))
+            print(json.dumps(stats), file=stats_file)
             k = Trainer.accuracy(model, valid_loader, answers_dict, config)
             loss_file = open(config.LOSS_PTH)
             loss_file.write(f"Accuracy on epoch {n} : {k} \n")

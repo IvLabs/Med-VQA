@@ -11,3 +11,10 @@ class Config:
     LOSS_PATH = "home/terasquid/Documents/med-VQA/baselines/Heirarchical/loss_of_epoch1.txt"
     MODEL_STORE_PATH = "home/terasquid/Documents/med-VQA/baselines/Heirarchical/loss_of_epoch1.txt"
     DEVICE = 'cpu'
+
+    CHECKPOINT_PATH = "home/terasquid/Documents/med-VQA/baselines/Heirarchical/checkpoint"
+    START_EPOCH = 0
+
+
+
+    
