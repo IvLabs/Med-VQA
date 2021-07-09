@@ -143,12 +143,12 @@ class Datamake:
         vqa_path="C:\\Users\\tpath\\Desktop\\nlp\\data_dictionary.pkl", 
         transforms=None, 
         freq_threshold=1,
-        batch_size = 32,
+        batch_size = 128,
         shuffle = True
     ):
         dataset = VQADataset( vqa_path, image_path, train_vocab=None)
         pad_idx = dataset.vocab.stoi["<PAD>"]
-        print(dataset.vocab.itos)
+        # print(dataset.vocab.itos)
         loader = DataLoader(dataset=dataset, 
                             batch_size=batch_size, 
                             shuffle=shuffle,
@@ -162,7 +162,7 @@ class Datamake:
         vqa_path="C:\\Users\\tpath\\Desktop\\nlp\\data_dictionary_val.pkl", 
         transforms=None, 
         freq_threshold=1,
-        batch_size = 32,
+        batch_size = 128,
         shuffle = True
     ):
         dataset = VQADataset( vqa_path, image_path, train_vocab=vocab)

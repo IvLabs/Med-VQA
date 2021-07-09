@@ -1,3 +1,4 @@
+from __future__ import print_function
 import torch 
 from _config import Config as config
 import model
@@ -5,6 +6,7 @@ import trainer
 import _utils
 from pathlib import Path
 import sys
+import time
 torch.backends.cudnn.benchmark = True
 
 path = Path(config.CHECKPOINT_PATH)
@@ -27,17 +29,18 @@ stud = model.Identity(coattention, visualfeatures, vocab_len)
 optimizer = torch.optim.Adam(stud.parameters(),lr=config.LR)
 
 if (path / 'checkpoint.pth').is_file():
-        ckpt = torch.load(config.CHECKPOINT_PATH / 'checkpoint.pth',
+        ckpt = torch.load(config.CHECKPOINT_PATH +"/"+ 'checkpoint.pth',
                           map_location='cpu')
         start_epoch = ckpt['epoch']
-        model.load_state_dict(ckpt['model'])
+        stud.load_state_dict(ckpt['model'])
         optimizer.load_state_dict(ckpt['optimizer'])
 else:
         start_epoch = config.START_EPOCH 
 stud = stud.to(config.DEVICE)
-
+config.START_EPOCH = start_epoch
 # print("ok")
 criterion = torch.nn.CrossEntropyLoss()
 scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, patience=3,verbose=True)
 
 trainer.Trainer.train(stud, train_loader, valid_loader, answers_dict, optimizer, criterion, scheduler, config, stats_file)
+
