@@ -143,7 +143,7 @@ class Datamake:
         vqa_path="C:\\Users\\tpath\\Desktop\\nlp\\data_dictionary.pkl", 
         transforms=None, 
         freq_threshold=1,
-        batch_size = 128,
+        batch_size = 32,
         shuffle = True
     ):
         dataset = VQADataset( vqa_path, image_path, train_vocab=None)
@@ -162,7 +162,7 @@ class Datamake:
         vqa_path="C:\\Users\\tpath\\Desktop\\nlp\\data_dictionary_val.pkl", 
         transforms=None, 
         freq_threshold=1,
-        batch_size = 128,
+        batch_size = 32,
         shuffle = True
     ):
         dataset = VQADataset( vqa_path, image_path, train_vocab=vocab)

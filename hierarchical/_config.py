@@ -1,6 +1,6 @@
 class Config:
     LR = 1e-4
-    MAX_EPOCHS = 150
+    MAX_EPOCHS = 200
 
     TRAIN_IMG_PATH = "/home/roboticslab/Documents/MED-VQA/dataset/med-vqa-data/med-vqa-data-main-vqa-med-2019/Resize_images"
     TEST_IMG_PATH = "/home/roboticslab/Documents/MED-VQA/dataset/med-vqa-data/med-vqa-data-main-vqa-med-2019/Resize_images_val"

@@ -1,6 +1,6 @@
 import argparse
-from vqarad.utils_vqarad import seed_everything, Model, VQAMed, train_one_epoch, validate, test, load_data, LabelSmoothing
-# import wandb
+from utils import seed_everything, Model, VQAMed, train_one_epoch, validate, test, load_data, LabelSmoothing
+import wandb
 import pandas as pd
 import numpy as np
 import torch
@@ -23,10 +23,10 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser(description = "Evaluate")
 
-    # parser.add_argument('--run_name', type = str, required = True, help = "run name for wandb")
-    parser.add_argument('--data_dir', type = str, required = False, default = "/home/terasquid/med-VQA/Dataset/Imageclef19/input/vqa-med-starter", help = "path for data")
-    parser.add_argument('--model_dir', type = str, required = False, default = "/home/terasquid/med-VQA/Weights/ic19/exp01_ic19_mlm_abnorm_acc.pt", help = "path to load weights")
-    parser.add_argument('--save_dir', type = str, required = False, default = "/home/terasquid/medvqa/Weights/ic19", help = "path to save weights")
+    parser.add_argument('--run_name', type = str, required = True, help = "run name for wandb")
+    parser.add_argument('--data_dir', type = str, required = False, default = "/home/roboticslab/Documents/MED-VQA/dataset/med-vqa-data", help = "path for data")
+    parser.add_argument('--model_dir', type = str, required = False, default = "/home/roboticslab/Documents/Weights/ic19/exp01_ic19_mlm_abnorm_acc.pt", help = "path to load weights")
+    parser.add_argument('--save_dir', type = str, required = False, default = "/home/viraj.bagal/viraj/medvqa/Weights/ic19", help = "path to save weights")
     parser.add_argument('--category', type = str, required = False, default = None,  help = "choose specific category if you want")
     parser.add_argument('--use_pretrained', action = 'store_true', default = False, help = "use pretrained weights or not")
     parser.add_argument('--mixed_precision', action = 'store_true', default = False, help = "use mixed precision or not")
@@ -59,7 +59,7 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
-    # wandb.init(project='medvqa', name = args.run_name, config = args)
+    wandb.init(project='medvqa', name = args.run_name, config = args)
 
     seed_everything(args.seed)
 
@@ -105,7 +105,7 @@ if __name__ == '__main__':
         
     model.to(device)
 
-    # wandb.watch(model, log='all')
+    wandb.watch(model, log='all')
 
 
     optimizer = optim.Adam(model.parameters(),lr=args.lr)

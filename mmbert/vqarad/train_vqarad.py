@@ -24,9 +24,9 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description = "Finetune on VQARAD")
 
     # parser.add_argument('--run_name', type = str, required = True, help = "run name for wandb")
-    parser.add_argument('--data_dir', type = str, required = False, default = "/vqa_rad", help = "path for data")
-    parser.add_argument('--model_dir', type = str, required = False, default = "/home/terasquid/Documents/med-VQA/baselines/Weights/roco_mlm/val_loss_3.pt", help = "path to load weights")
-    parser.add_argument('--save_dir', type = str, required = False, default = "/home/terasquid/med-VQA/Weights/vqa-rad", help = "path to save weights")
+    parser.add_argument('--data_dir', type = str, required = False, default = "/home/roboticslab/Documents/MED-VQA/dataset/med-vqa-data/vqa_rad", help = "path for data")
+    parser.add_argument('--model_dir', type = str, required = False, default = "/home/roboticslab/Documents/MED-VQA/github/Weights/roco_mlm/val_loss_3.pt", help = "path to load weights")
+    parser.add_argument('--save_dir', type = str, required = False, default = "/home/roboticslab/Documents/MED-VQA/github/Weights/vqa-rad", help = "path to save weights")
     parser.add_argument('--question_type', type = str, required = False, default = None,  help = "choose specific category if you want")
     parser.add_argument('--use_pretrained', action = 'store_true', default = False, help = "use pretrained weights or not")
     parser.add_argument('--mixed_precision', action = 'store_true', default = False, help = "use mixed precision or not")
@@ -95,7 +95,7 @@ if __name__ == '__main__':
     def count_parameters(model):
         return sum(p.numel() for p in model.parameters() if p.requires_grad)
 
-    print(f'The model has {count_parameters(model):,} trainable parameters')
+    print('The model has {}: trainable parameters'.format(count_parameters(model)))
     
 
     if args.use_pretrained:
@@ -154,7 +154,7 @@ if __name__ == '__main__':
 
     for epoch in range(args.epochs):
 
-        print(f'Epoch {epoch+1}/{args.epochs}')
+        print('Epoch {}/{}'.format(epoch+1,args.epochs))
 
 
         train_loss, train_acc = train_one_epoch(trainloader, model, optimizer, criterion, device, scaler, args, train_df,idx2ans)

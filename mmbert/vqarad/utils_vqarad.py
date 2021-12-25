@@ -390,6 +390,7 @@ def train_one_epoch(loader, model, optimizer, criterion, device, scaler, args, t
     TARGETS = []
     
     bar = tqdm(loader, leave = False)
+    print("train bar len : ",str(len(bar)))
     for (img, question_token,segment_ids,attention_mask,target) in bar:
         
         img, question_token,segment_ids,attention_mask,target = img.to(device), question_token.to(device), segment_ids.to(device), attention_mask.to(device), target.to(device)
@@ -433,16 +434,16 @@ def train_one_epoch(loader, model, optimizer, criterion, device, scaler, args, t
         loss_np = loss.detach().cpu().numpy()
         train_loss.append(loss_np)
         bar.set_description('train_loss: %.5f' % (loss_np))
-    
+    print(type(PREDS))
     PREDS = torch.cat(PREDS).cpu().numpy()
     TARGETS = torch.cat(TARGETS).cpu().numpy()
 
     total_acc = (PREDS == TARGETS).mean() * 100.
-    closed_acc = (PREDS[train_df['answer_type']=='CLOSED'] == TARGETS[train_df['answer_type']=='CLOSED']).mean() * 100.
-    open_acc = (PREDS[train_df['answer_type']=='OPEN'] == TARGETS[train_df['answer_type']=='OPEN']).mean() * 100.
+    # closed_acc = (PREDS[train_df['answer_type']=='CLOSED'] == TARGETS[train_df['answer_type']=='CLOSED']).mean() * 100.
+    # open_acc = (PREDS[train_df['answer_type']=='OPEN'] == TARGETS[train_df['answer_type']=='OPEN']).mean() * 100.
 
-    acc = {'total_acc': np.round(total_acc, 4), 'closed_acc': np.round(closed_acc, 4), 'open_acc': np.round(open_acc, 4)}
-
+    # acc = {'total_acc': np.round(total_acc, 4), 'closed_acc': np.round(closed_acc, 4), 'open_acc': np.round(open_acc, 4)}
+    acc = {'total_acc': np.round(total_acc, 4)}
 
     return np.mean(train_loss), acc
 
@@ -454,9 +455,13 @@ def validate(loader, model, criterion, device, scaler, args, val_df, idx2ans):
     TARGETS = []
     bar = tqdm(loader, leave=False)
 
+
+
     with torch.no_grad():
+        print("val bar len",len(bar))
         for (img, question_token,segment_ids,attention_mask,target) in bar:
 
+            print("1")
             img, question_token,segment_ids,attention_mask,target = img.to(device), question_token.to(device), segment_ids.to(device), attention_mask.to(device), target.to(device)
             question_token = question_token.squeeze(1)
             attention_mask = attention_mask.squeeze(1)
@@ -475,6 +480,9 @@ def validate(loader, model, criterion, device, scaler, args, val_df, idx2ans):
 
             pred = logits.softmax(1).argmax(1).detach()
 
+
+            print(PREDS, pred, target)
+
             PREDS.append(pred)
 
             if args.smoothing:
@@ -488,8 +496,12 @@ def validate(loader, model, criterion, device, scaler, args, val_df, idx2ans):
 
         val_loss = np.mean(val_loss)
 
+    # print(type(PREDS))
+    print(np.shape(PREDS), np.shape(TARGETS))
     PREDS = torch.cat(PREDS).cpu().numpy()
     TARGETS = torch.cat(TARGETS).cpu().numpy()
+    # PREDS = np.array(PREDS)
+    # TARGETS = np.array(TARGETS)
 
     total_acc = (PREDS == TARGETS).mean() * 100.
     closed_acc = (PREDS[val_df['answer_type']=='CLOSED'] == TARGETS[val_df['answer_type']=='CLOSED']).mean() * 100.
